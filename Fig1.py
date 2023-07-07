@@ -1,5 +1,6 @@
 ### Libraries
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 
@@ -34,8 +35,8 @@ cb1.ax.set_title('Proportion of male \n at equilibrium', fontsize=15, fontweight
 ### Data and plotting
 df_name = 'df_one_no_mimicry_plk.csv'
 
-lev = [0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95,
-       1, 1.01]
+lev = np.arange(0,1.001, 0.001).tolist()
+cs_lev = np.arange(0,1.05, 0.05).tolist()
 
 for i in range(2):
     df_brut = pd.read_csv("./data/{0}".format(df_name))
@@ -57,9 +58,9 @@ for i in range(2):
     df['av_sr'] = df['sr'].groupby([df['p'], df['l1']]).transform('mean')
 
     ax[i].tricontourf(df['p'], df['l1'], df['av_sr'], levels=lev, cmap=cmap,
-                      vmin=0, vmax=1, alpha=1, antialiased=True)
+                      vmin=0, vmax=1, alpha=1, antialiased=False)
 
-    cs = ax[i].tricontour(df['p'], df['l1'], df['av_sr'], levels=lev, colors=['darkred'],
+    cs = ax[i].tricontour(df['p'], df['l1'], df['av_sr'], levels=cs_lev, colors=['darkred'],
                           linestyles=[(0, (5, 10))], vmin=0, vmax=1, alpha=1, antialiased=False, linewidths=2)
 
     ax[i].clabel(cs, fontsize=12, inline_spacing=0.2)
